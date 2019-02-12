@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Notes.ViewModels;assembly=Notes"
+             x:Class="Notes.Pages.AddNotePage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalTextAlignment" Value="End"></Setter>
+                <Setter Property="FlexLayout.Basis" Value="25%"></Setter>
+            </Style>
+            <Style x:Key="HeaderEntryStyle" TargetType="Entry">
+                <Setter Property="FlexLayout.Basis" Value="75%"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Item"/>
+        <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.BindingContext>
+        <viewModels:AddNoteViewModel x:Name="ViewModel"/>
+    </ContentPage.BindingContext>
+    <ListView>
+        <ListView.Header>
+            <FlexLayout Direction="Row" Wrap="Wrap">
+                <Label Text="Name:" Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry Placeholder="Name" Style="{StaticResource HeaderEntryStyle}" Text="{Binding Title}"/>
+                <Label Text="Description:" Style="{StaticResource HeaderLabelStyle}" />
+                <Entry Placeholder="Description" Style="{StaticResource HeaderEntryStyle}" Text="{Binding Description}"/>
+                <Label Text="Private:" Style="{StaticResource HeaderLabelStyle}" />
+                <Switch  IsToggled="{Binding IsPrivate}"/>
+            </FlexLayout>
+        </ListView.Header>
+    </ListView>
+</ContentPage>
