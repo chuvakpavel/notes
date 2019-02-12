@@ -24,9 +24,12 @@ namespace Notes.ViewModels
 
         private async void SaveNote()
         {
-            var notes = await App.Database.GetAllNotesAsync();
             var note = new Note() { Title = Title, Description = Description, IsPrivate = IsPrivate };
-            var result = await App.Database.SaveNoteAsync(note);
+            var result = await DataService.SaveNoteAsync(note);
+            if (result)
+            {
+                await NavigationService.PopAsync();
+            }
         }
 
         private bool CanExecuteSaveCommand()

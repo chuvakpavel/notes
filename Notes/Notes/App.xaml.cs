@@ -11,7 +11,6 @@ namespace Notes
 {
     public partial class App : Application
     {
-        static NotesRepository _database;
 
         public App()
         {
@@ -38,21 +37,6 @@ namespace Notes
         protected override void OnResume()
         {
             // Handle when your app resumes
-        }
-
-        public static NotesRepository Database
-        {
-            get
-            {
-                if (_database == null)
-                {
-                    _database = new NotesRepository(
-                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                            "NotesSQLite.db3"));
-                }
-
-                return _database;
-            }
         }
     }
 }
