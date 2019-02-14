@@ -38,5 +38,10 @@ namespace Notes.Database
         {
             return await _database.Table<Note>().ToListAsync();
         }
+
+        public async Task<int> DeleteNoteAsync(Note note)
+        {
+            return await _database.DeleteAsync(note);
+        }
     }
 }

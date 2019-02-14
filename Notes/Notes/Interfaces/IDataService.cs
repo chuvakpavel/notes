@@ -9,5 +9,6 @@ namespace Notes.Interfaces
         Task<bool> SaveNoteAsync(Note note);
 
         Task<List<Note>> GetAllNotesAsync();
+        Task<int> DeleteNoteAsync(Note note);
     }
 }

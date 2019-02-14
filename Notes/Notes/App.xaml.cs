@@ -21,7 +21,7 @@ namespace Notes
 
             InitializeComponent();
 
-            MainPage = new NavigationPage(new NewPasswordPage());
+            MainPage = new NavigationPage(new NoteListPage());
         }
 
         protected override void OnStart()

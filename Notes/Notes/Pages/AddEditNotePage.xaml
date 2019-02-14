@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Notes.ViewModels;assembly=Notes"
-             x:Class="Notes.Pages.AddNotePage">
+             x:Class="Notes.Pages.AddEditNotePage" Title="{Binding PageTitle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="HeaderLabelStyle" TargetType="Label">
@@ -16,12 +16,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Item"/>
-        <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"/>
+        <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
-    <ContentPage.BindingContext>
-        <viewModels:AddNoteViewModel x:Name="ViewModel"/>
-    </ContentPage.BindingContext>
     <ListView>
         <ListView.Header>
             <FlexLayout Direction="Row" Wrap="Wrap">

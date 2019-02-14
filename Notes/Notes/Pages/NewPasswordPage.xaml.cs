@@ -14,7 +14,7 @@ namespace Notes.Pages
 
 	    private void AddNoteButtonClicked(object sender, EventArgs e)
 	    {
-	        Navigation.PushAsync(new AddNotePage());
+	        Navigation.PushAsync(new AddEditNotePage());
 	    }
 	}
 }
