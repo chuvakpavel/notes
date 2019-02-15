@@ -11,7 +11,7 @@
         <ToolbarItem Text="Profile" Clicked="ProfileClicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding NoteList}" ItemSelected="NoteSelected" SelectedItem="{Binding SelectedItem}">
+        <ListView ItemsSource="{Binding NoteList}"  ItemTapped ="ListView_OnItemTapped" SelectedItem="{Binding SelectedItem}" CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
