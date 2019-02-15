@@ -17,9 +17,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"></ToolbarItem>
+        <ToolbarItem Text="Add Item" Command="{Binding AddItemCommand}"/>
+        <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"/>
     </ContentPage.ToolbarItems>
-    <ListView>
+    <ListView ItemsSource="{Binding NoteFiles}">
         <ListView.Header>
             <FlexLayout Direction="Row" Wrap="Wrap">
                 <Label Text="Name:" Style="{StaticResource HeaderLabelStyle}"/>
@@ -30,5 +31,17 @@
                 <Switch  IsToggled="{Binding IsPrivate}" Toggled="Switch_OnToggled"/>
             </FlexLayout>
         </ListView.Header>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="{Binding FileName}" Detail="{Binding FilePath}">
+                    <TextCell.ContextActions>
+                        <MenuItem Clicked="OpenClicked" CommandParameter="{Binding .}"
+                                  Text="Open" />
+                        <MenuItem Clicked="DeleteClicked" CommandParameter="{Binding .}"
+                                  Text="Delete" IsDestructive="True" />
+                    </TextCell.ContextActions>
+                </TextCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
     </ListView>
 </ContentPage>

@@ -1,7 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Notes.Models;
+using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
 using Xamarin.Forms;
 
 namespace Notes.ViewModels
@@ -28,9 +31,12 @@ namespace Notes.ViewModels
 
         public ICommand SaveNoteCommand { get; set; }
 
+        public ICommand AddItemCommand { get; set; }
+
         public AddEditNoteViewModel(Note note)
         {
             SaveNoteCommand = new Command(SaveNote, CanExecuteSaveCommand);
+            AddItemCommand = new Command(AddItem);
             if (note == null)
             {
                 PageTitle = "Add New Note";
@@ -45,6 +51,23 @@ namespace Notes.ViewModels
                 NoteFiles = new ObservableCollection<NoteFile>();
                 NoteFiles = note.NoteFiles != null ? new ObservableCollection<NoteFile>(note.NoteFiles) : new ObservableCollection<NoteFile>();
 
+            }
+        }
+
+        private async void AddItem()
+        {
+            try
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData == null)
+                    return; // user canceled file picking
+
+                var noteFile = new NoteFile() { FileName = fileData.FileName, FilePath = fileData.FilePath, FileType = FilesTypes.Document };
+                NoteFiles.Add(noteFile);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("Exception choosing file: " + ex.ToString());
             }
         }
 
