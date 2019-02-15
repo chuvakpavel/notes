@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:viewModels="clr-namespace:Notes.ViewModels;assembly=Notes"
+             xmlns:behaviors="clr-namespace:Notes.Behaviors;assembly=Notes"
+             x:Class="Notes.Pages.PopUpsPages.ProfilePopUp"
+             CloseWhenBackgroundIsClicked="False">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation DurationIn="400"
+                                   DurationOut="300"
+                                   EasingIn="SinOut"
+                                   EasingOut="SinIn"
+                                   HasBackgroundAnimation="True"
+                                   PositionIn="Center"
+                                   PositionOut="Center"
+                                   ScaleIn="1.2"
+                                   ScaleOut="0.8" />
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.BindingContext>
+        <viewModels:ProfileViewModel x:Name="ViewModel"/>
+    </pages:PopupPage.BindingContext>
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <Style  TargetType="Entry">
+                <Setter Property="IsPassword" Value="True"></Setter>
+                <Setter Property="IsTabStop" Value="True"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <Frame  >
+        <FlexLayout Direction="Row"  Wrap="Wrap" AlignItems="Center" AlignContent="Center" Padding="50" >
+            <Label FlexLayout.Basis="100%" Text="Please, set password for private notes" HorizontalTextAlignment="Center"/>
+            <Entry Placeholder="Old Password" Text="{Binding OldPassword}" IsVisible="{Binding IsPasswordSet}" BackgroundColor="White" FlexLayout.Basis="100%" x:Name="OldPasswordEntry"/>
+            <Entry Placeholder="Password" Text="{Binding Password}" BackgroundColor="White" FlexLayout.Basis="100%" x:Name="PasswordEntry"/>
+            <Entry Placeholder="Confirm Password" BackgroundColor="White" FlexLayout.Basis="100%" IsTabStop="True">
+                <Entry.Behaviors>
+                    <behaviors:ConfirmationValidatorBehavior x:Name="EmailConfirmationBehavior" ConfirmationText="{Binding Source={x:Reference PasswordEntry}, Path=Text}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Button Text="Apply" FlexLayout.Basis="100%" IsEnabled="{Binding Source={x:Reference EmailConfirmationBehavior}, Path=IsValid}" Command="{Binding SavePassCommand}"/>
+            <Label Text="{Binding ErrorMessage}" TextColor="Red"></Label>
+            <Button Text="Cancel" FlexLayout.Basis="100%" Clicked="CancelClicked" x:Name="CancelButton"/>
+
+        </FlexLayout>
+    </Frame>
+</pages:PopupPage>

@@ -10,8 +10,9 @@
                 <Setter Property="HorizontalTextAlignment" Value="End"></Setter>
                 <Setter Property="FlexLayout.Basis" Value="25%"></Setter>
             </Style>
-            <Style x:Key="HeaderEntryStyle" TargetType="Entry">
+            <Style x:Key="HeaderEntryStyle" TargetType="Entry" >
                 <Setter Property="FlexLayout.Basis" Value="75%"></Setter>
+                <Setter Property="IsTabStop" Value="True"></Setter>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -26,7 +27,7 @@
                 <Label Text="Description:" Style="{StaticResource HeaderLabelStyle}" />
                 <Entry Placeholder="Description" Style="{StaticResource HeaderEntryStyle}" Text="{Binding Description}"/>
                 <Label Text="Private:" Style="{StaticResource HeaderLabelStyle}" />
-                <Switch  IsToggled="{Binding IsPrivate}"/>
+                <Switch  IsToggled="{Binding IsPrivate}" Toggled="Switch_OnToggled"/>
             </FlexLayout>
         </ListView.Header>
     </ListView>

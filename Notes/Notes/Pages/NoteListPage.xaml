@@ -8,19 +8,25 @@
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddNoteClicked"/>
+        <ToolbarItem Text="Profile" Clicked="ProfileClicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView ItemsSource="{Binding NoteList}" ItemSelected="NoteSelected" SelectedItem="{Binding SelectedItem}">
             <ListView.ItemTemplate>
-             <DataTemplate>
-                    <TextCell Text="{Binding Title}" Detail="{Binding Description}" >
-                        <TextCell.ContextActions>
+                <DataTemplate>
+                    <ViewCell>
+                        <FlexLayout Wrap="Wrap">
+                            <Label Text="{Binding Title}"  FlexLayout.Basis="70%" LineBreakMode="TailTruncation"></Label>
+                            <Label Text="{Binding IsPrivate,StringFormat='Is private:{0}'}" FlexLayout.Basis="29%" HorizontalTextAlignment="End"/>
+                            <Label Text="{Binding Description}" LineBreakMode="TailTruncation" FlexLayout.Basis="100%"/>
+                        </FlexLayout>
+                        <ViewCell.ContextActions>
                             <MenuItem Clicked="DeleteClicked" CommandParameter="{Binding .}"
-                                      Text="Delete" IsDestructive="True" />
-                        </TextCell.ContextActions>
-                    </TextCell>
-             </DataTemplate>
-         </ListView.ItemTemplate>
+                                   Text="Delete" IsDestructive="True" />
+                        </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
     </ContentPage.Content>
 </ContentPage>

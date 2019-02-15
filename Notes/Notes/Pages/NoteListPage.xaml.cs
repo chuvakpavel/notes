@@ -1,5 +1,8 @@
 ﻿using System;
+using Notes.Helpers;
 using Notes.Models;
+using Notes.Pages.PopUpsPages;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,6 +39,11 @@ namespace Notes.Pages
             {
                 await ViewModel.DeleteNote(note);
             }
+        }
+
+        private async void ProfileClicked(object sender, EventArgs e)
+        {
+            await PopUpsHelper.ShowProfilePopUp();
         }
     }
 }
