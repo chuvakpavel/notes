@@ -80,7 +80,10 @@ namespace Notes.ViewModels
                 await NavigationService.PopAsync();
             }
         }
-
+        public void DeleteNoteItem(NoteFile noteFile)
+        {
+            NoteFiles.Remove(noteFile);
+        }
         private bool CanExecuteSaveCommand()
         {
             return !string.IsNullOrEmpty(Title);

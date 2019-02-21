@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using Notes.Helpers;
+using Notes.Interfaces;
 using Notes.Models;
 using Notes.ViewModels;
 using Xamarin.Essentials;
@@ -11,10 +13,13 @@ namespace Notes.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddEditNotePage
     {
+        public IPlatformDocumentOpener DocumentOpener = DependencyService.Get<IPlatformDocumentOpener>();
+        private AddEditNoteViewModel _viewModel;
         public AddEditNotePage(Note note = null)
         {
             InitializeComponent();
-            BindingContext = new AddEditNoteViewModel(note);
+            _viewModel=new AddEditNoteViewModel(note);
+            BindingContext = _viewModel;
         }
 
         private async void Switch_OnToggled(object sender, ToggledEventArgs e)
@@ -25,19 +30,27 @@ namespace Notes.Pages
             }
         }
 
-        private void OpenClicked(object sender, EventArgs e)
+        private async void OpenClicked(object sender, EventArgs e)
         {
-            if (sender is MenuItem mi && mi.CommandParameter is NoteFile note)
+            if (sender is MenuItem mi && mi.CommandParameter is NoteFile noteFile)
             {
-                Device.OpenUri(new Uri(note.FilePath));
+                if (DocumentOpener.CanOpen(noteFile.FilePath))
+                {
+                    var res = await DocumentOpener.Open(noteFile.FilePath);
+                }
+                else
+                {
+                   await DisplayAlert("Error", "Can't open","Ok");
+                }
+
             }
         }
 
         private void DeleteClicked(object sender, EventArgs e)
         {
-            if (sender is MenuItem mi && mi.CommandParameter is Note note)
+            if (sender is MenuItem mi && mi.CommandParameter is NoteFile noteFile)
             {
-
+                _viewModel.DeleteNoteItem(noteFile);
             }
         }
     }
