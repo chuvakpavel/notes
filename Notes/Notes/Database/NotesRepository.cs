@@ -61,7 +61,20 @@ namespace Notes.Database
 
         public async Task<int> DeleteNoteAsync(Note note)
         {
+            if (note.NoteFiles!=null&&note.NoteFiles.Count>0)
+            {
+                foreach (var noteFile in note.NoteFiles)
+                {
+                    await _database.DeleteAsync(noteFile);
+                }
+            }
+            
             return await _database.DeleteAsync(note);
+        }
+
+        public async Task<int> DeleteNoteFileAsync(NoteFile noteFile)
+        {
+            return await _database.DeleteAsync(noteFile);
         }
 
         private async Task SaveNoteFiles(Note note)

@@ -10,5 +10,6 @@ namespace Notes.Interfaces
 
         Task<List<Note>> GetAllNotesAsync();
         Task<int> DeleteNoteAsync(Note note);
+        Task<int> DeleteNoteFileAsync(NoteFile noteFile);
     }
 }

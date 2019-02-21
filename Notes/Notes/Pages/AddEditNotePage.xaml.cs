@@ -46,11 +46,11 @@ namespace Notes.Pages
             }
         }
 
-        private void DeleteClicked(object sender, EventArgs e)
+        private async void DeleteClicked(object sender, EventArgs e)
         {
             if (sender is MenuItem mi && mi.CommandParameter is NoteFile noteFile)
             {
-                _viewModel.DeleteNoteItem(noteFile);
+                await _viewModel.DeleteNoteItem(noteFile);
             }
         }
     }

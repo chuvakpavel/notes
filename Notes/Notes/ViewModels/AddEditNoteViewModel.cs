@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Notes.Models;
 using Plugin.FilePicker;
@@ -79,8 +80,9 @@ namespace Notes.ViewModels
                 await NavigationService.PopAsync();
             }
         }
-        public void DeleteNoteItem(NoteFile noteFile)
+        public async Task DeleteNoteItem(NoteFile noteFile)
         {
+            await DataService.DeleteNoteFileAsync(noteFile);
             NoteFiles.Remove(noteFile);
         }
         private bool CanExecuteSaveCommand()
