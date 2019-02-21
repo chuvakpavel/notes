@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:Notes.ViewModels;assembly=Notes"
+             xmlns:converters="clr-namespace:Notes.Converters;assembly=Notes"
              x:Class="Notes.Pages.AddEditNotePage" Title="{Binding PageTitle}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -14,10 +14,11 @@
                 <Setter Property="FlexLayout.Basis" Value="75%"></Setter>
                 <Setter Property="IsTabStop" Value="True"></Setter>
             </Style>
+            <converters:IntEnumConverter x:Key="IntEnum"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Item" Command="{Binding AddItemCommand}"/>
+        <ToolbarItem Text="Add Item" Clicked="AddItemClicked"/>
         <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"/>
     </ContentPage.ToolbarItems>
     <ListView ItemsSource="{Binding NoteFiles}">
@@ -29,6 +30,7 @@
                 <Entry Placeholder="Description" Style="{StaticResource HeaderEntryStyle}" Text="{Binding Description}"/>
                 <Label Text="Private:" Style="{StaticResource HeaderLabelStyle}" />
                 <Switch  IsToggled="{Binding IsPrivate}" Toggled="Switch_OnToggled"/>
+                <Picker IsVisible="False" x:Name="TypePicker" ItemsSource="{Binding TypesNames}" SelectedItem="{Binding SelectedType}" SelectedIndexChanged="TypePicker_SelectedIndexChanged"/>
             </FlexLayout>
         </ListView.Header>
         <ListView.ItemTemplate>

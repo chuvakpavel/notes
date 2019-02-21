@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,12 +33,14 @@ namespace Notes.ViewModels
 
         public ICommand SaveNoteCommand { get; set; }
 
+        public List<string> TypesNames => Enum.GetNames(typeof(FilesTypes)).ToList();
+        public string SelectedType { get; set; }
+
         public ICommand AddItemCommand { get; set; }
 
         public AddEditNoteViewModel(Note note)
         {
             SaveNoteCommand = new Command(SaveNote, CanExecuteSaveCommand);
-            AddItemCommand = new Command(AddItem);
             NoteFiles = new ObservableCollection<NoteFile>();
             if (note == null)
             {
@@ -54,7 +57,7 @@ namespace Notes.ViewModels
             }
         }
 
-        private async void AddItem()
+        private async Task AddDocument()
         {
             try
             {
@@ -68,6 +71,16 @@ namespace Notes.ViewModels
             catch (Exception ex)
             {
                 System.Console.WriteLine("Exception choosing file: " + ex.ToString());
+            }
+        }
+
+        public async void AddItem()
+        {
+            Enum.TryParse(SelectedType, out FilesTypes result);
+            SelectedType = String.Empty;
+            if (result == FilesTypes.Document)
+            {
+                await AddDocument();
             }
         }
 

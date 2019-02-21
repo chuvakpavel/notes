@@ -2,7 +2,7 @@
 {
     public enum FilesTypes
     {
-        Text=1,
+        Text=0,
         Picture,
         Video,
         Document,

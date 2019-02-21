@@ -34,15 +34,17 @@ namespace Notes.Pages
         {
             if (sender is MenuItem mi && mi.CommandParameter is NoteFile noteFile)
             {
-                if (DocumentOpener.CanOpen(noteFile.FilePath))
+                if (noteFile.FileType==FilesTypes.Document)
                 {
-                    var res = await DocumentOpener.Open(noteFile.FilePath);
+                    if (DocumentOpener.CanOpen(noteFile.FilePath))
+                    {
+                        var res = await DocumentOpener.Open(noteFile.FilePath);
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "Can't open", "Ok");
+                    }
                 }
-                else
-                {
-                   await DisplayAlert("Error", "Can't open","Ok");
-                }
-
             }
         }
 
@@ -51,6 +53,22 @@ namespace Notes.Pages
             if (sender is MenuItem mi && mi.CommandParameter is NoteFile noteFile)
             {
                 await _viewModel.DeleteNoteItem(noteFile);
+            }
+        }
+
+        private void AddItemClicked(object sender, EventArgs e)
+        {
+            TypePicker.Focus();
+        }
+
+        private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                _viewModel.AddItem();
             }
         }
     }
