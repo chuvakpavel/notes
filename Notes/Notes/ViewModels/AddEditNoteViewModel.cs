@@ -37,6 +37,7 @@ namespace Notes.ViewModels
         {
             SaveNoteCommand = new Command(SaveNote, CanExecuteSaveCommand);
             AddItemCommand = new Command(AddItem);
+            NoteFiles = new ObservableCollection<NoteFile>();
             if (note == null)
             {
                 PageTitle = "Add New Note";
@@ -48,9 +49,7 @@ namespace Notes.ViewModels
                 Title = note.Title;
                 Description = note.Description;
                 IsPrivate = note.IsPrivate;
-                NoteFiles = new ObservableCollection<NoteFile>();
                 NoteFiles = note.NoteFiles != null ? new ObservableCollection<NoteFile>(note.NoteFiles) : new ObservableCollection<NoteFile>();
-
             }
         }
 

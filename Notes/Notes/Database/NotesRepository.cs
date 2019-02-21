@@ -25,23 +25,68 @@ namespace Notes.Database
 
         public async Task<bool> SaveNoteAsync(Note note)
         {
+            int result;
             if (note.Id != 0)
             {
-                await _database.UpdateAsync(note);
-                return note.Id != 0;
+                result = await _database.UpdateAsync(note);
+
+            }
+            else
+            {
+                result = await _database.InsertAsync(note);
             }
 
-            return await _database.InsertAsync(note) != 0;
+
+            var res = result != 0;
+            if (res)
+            {
+                await SaveNoteFiles(note);
+            }
+
+            return res;
         }
 
         public async Task<List<Note>> GetAllNotesAsync()
         {
-            return await _database.Table<Note>().ToListAsync();
+            var notes = await _database.Table<Note>().ToListAsync();
+            if (notes!=null && notes.Count>0)
+            {
+                foreach (var note in notes)
+                {
+                    note.NoteFiles = await GetNoteFiles(note);
+                }
+            }
+            return notes;
         }
 
         public async Task<int> DeleteNoteAsync(Note note)
         {
             return await _database.DeleteAsync(note);
         }
+
+        private async Task SaveNoteFiles(Note note)
+        {
+            if (note.NoteFiles.Count > 0)
+            {
+                foreach (var noteFile in note.NoteFiles)
+                {
+                    noteFile.NoteId = note.Id;
+                    if (noteFile.Id == 0)
+                    {
+                        await _database.InsertAsync(noteFile);
+                    }
+                    else
+                    {
+                        await _database.UpdateAsync(noteFile);
+                    }
+                }
+            }
+        }
+
+        private async Task<List<NoteFile>> GetNoteFiles(Note note)
+        {
+            return await _database.Table<NoteFile>().Where(t => t.NoteId == note.Id).ToListAsync();
+        }
+
     }
 }
