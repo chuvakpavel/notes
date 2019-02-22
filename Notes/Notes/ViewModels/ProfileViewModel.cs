@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Input;
 using Notes.Helpers;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -28,7 +30,7 @@ namespace Notes.ViewModels
 
         private async void ExecuteSaveCommand()
         {
-            ErrorMessage=String.Empty;
+            ErrorMessage = String.Empty;
             if (IsPasswordSet)
             {
                 if (Preferences.Get(nameof(ConstantHelper.Password), string.Empty) == ProtectPassword(OldPassword))

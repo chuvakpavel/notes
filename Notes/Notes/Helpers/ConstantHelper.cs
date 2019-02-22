@@ -8,6 +8,8 @@ namespace Notes.Helpers
    {
        public static string IsPasswordSetName;
 
-       public static string Password;
+       public static string IsFingerPrintAvailableName;
+
+        public static string Password;
    }
 }

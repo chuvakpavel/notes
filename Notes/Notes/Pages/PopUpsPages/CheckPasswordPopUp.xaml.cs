@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Notes.Helpers;
+using Plugin.Fingerprint;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +18,8 @@ namespace Notes.Pages.PopUpsPages
         public CheckPasswordPopUp()
         {
             InitializeComponent();
+
+            FingerPrintButton.IsVisible = Preferences.Get(nameof(ConstantHelper.IsFingerPrintAvailableName), false);
         }
 
         private async void ApplyClicked(object sender, EventArgs e)
@@ -30,6 +34,13 @@ namespace Notes.Pages.PopUpsPages
         private async void CancelClicked(object sender, EventArgs e)
         {
             PasswordChecked?.Invoke(this, false);
+            await PopUpsHelper.HidePopUps();
+        }
+
+        private async void FingerprintClicked(object sender, EventArgs e)
+        {
+            var result = await CrossFingerprint.Current.AuthenticateAsync("Use fingerprint for get access to private data");
+            PasswordChecked?.Invoke(this, result.Authenticated);
             await PopUpsHelper.HidePopUps();
         }
     }

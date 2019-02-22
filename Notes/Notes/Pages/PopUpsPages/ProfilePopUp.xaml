@@ -42,7 +42,6 @@
             <Button Text="Apply" FlexLayout.Basis="100%" IsEnabled="{Binding Source={x:Reference EmailConfirmationBehavior}, Path=IsValid}" Command="{Binding SavePassCommand}"/>
             <Label Text="{Binding ErrorMessage}" TextColor="Red"></Label>
             <Button Text="Cancel" FlexLayout.Basis="100%" Clicked="CancelClicked" x:Name="CancelButton"/>
-
         </FlexLayout>
     </Frame>
 </pages:PopupPage>
