@@ -18,7 +18,7 @@ namespace Notes.Pages
         public AddEditNotePage(Note note = null)
         {
             InitializeComponent();
-            _viewModel=new AddEditNoteViewModel(note);
+            _viewModel = new AddEditNoteViewModel(note);
             BindingContext = _viewModel;
         }
 
@@ -34,16 +34,19 @@ namespace Notes.Pages
         {
             if (sender is MenuItem mi && mi.CommandParameter is NoteFile noteFile)
             {
-                if (noteFile.FileType==FilesTypes.Document)
+                switch (noteFile.FileType)
                 {
-                    if (DocumentOpener.CanOpen(noteFile.FilePath))
-                    {
-                        var res = await DocumentOpener.Open(noteFile.FilePath);
-                    }
-                    else
-                    {
-                        await DisplayAlert("Error", "Can't open", "Ok");
-                    }
+                    case FilesTypes.Document:
+                        if (DocumentOpener.CanOpen(noteFile.FilePath))
+                        {
+                            var res = await DocumentOpener.Open(noteFile.FilePath);
+                        }
+                        else
+                        {
+                            await DisplayAlert("Error", "Can't open", "Ok");
+                        }
+                        break;
+                    case FilesTypes.Link: Device.OpenUri(new Uri(noteFile.FileName)); break;
                 }
             }
         }
