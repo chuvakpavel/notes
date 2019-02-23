@@ -1,6 +1,7 @@
 ﻿using Notes.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Xamarin.Forms;
 
@@ -16,11 +17,22 @@ namespace Notes.Pages.DataTemplates
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
             var template = new DataTemplate();
-            switch (((NoteFile)item).FileType)
+            var noteItem = (NoteFile)item;
+            var extension = Path.GetExtension(noteItem.FilePath);
+            switch (noteItem.FileType)
             {
-                case FilesTypes.Text:template = TextDataTemplate;break;
+                case FilesTypes.Text: template = TextDataTemplate; break;
                 case FilesTypes.Link: template = LinkDataTemplate; break;
-                case FilesTypes.Document: template = DocumentDataTemplate; break;
+                case FilesTypes.Document:
+                    if (Path.GetExtension(noteItem.FilePath) == ".jpg" || Path.GetExtension(noteItem.FilePath) == ".jpeg" || Path.GetExtension(noteItem.FilePath) == ".png")
+                    {
+                        template = PhotoDataTemplate;
+                    }
+                    else
+                    {
+                        template = DocumentDataTemplate;
+                    }
+                    break;
                 case FilesTypes.Photo: template = PhotoDataTemplate; break;
             }
             return template;

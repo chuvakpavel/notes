@@ -70,8 +70,11 @@
                 </TextCell>
             </DataTemplate>
             <DataTemplate x:Key="PhotoDataTemplate">
-                <ImageCell ImageSource="{Binding FilePath}">
-                    <ImageCell.ContextActions>
+                <ViewCell>
+                    <Image Aspect="AspectFill"
+                           HeightRequest="200"
+                           Source="{Binding FilePath}" />
+                    <ViewCell.ContextActions>
                         <MenuItem Clicked="OpenClicked"
                                   CommandParameter="{Binding .}"
                                   Text="Open" />
@@ -79,8 +82,8 @@
                                   CommandParameter="{Binding .}"
                                   IsDestructive="True"
                                   Text="Delete" />
-                    </ImageCell.ContextActions>
-                </ImageCell>
+                    </ViewCell.ContextActions>
+                </ViewCell>
             </DataTemplate>
             <local:NoteTypeFileTemplateSelector x:Key="noteTypeFileTemplateSelector"
                                                 DocumentDataTemplate="{StaticResource DocumentDataTemplate}"
@@ -94,7 +97,8 @@
         <ToolbarItem Clicked="AddItemClicked" Text="Add Item" />
         <ToolbarItem Command="{Binding SaveNoteCommand}" Text="Save" />
     </ContentPage.ToolbarItems>
-    <ListView ItemTemplate="{StaticResource noteTypeFileTemplateSelector}"
+    <ListView HasUnevenRows="True"
+              ItemTemplate="{StaticResource noteTypeFileTemplateSelector}"
               ItemsSource="{Binding NoteFiles}"
               SelectionMode="None"
               SeparatorVisibility="None">
