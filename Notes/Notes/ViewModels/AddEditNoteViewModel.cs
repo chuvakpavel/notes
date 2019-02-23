@@ -8,6 +8,7 @@ using Notes.Helpers;
 using Notes.Models;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
+using Plugin.Media;
 using Xamarin.Forms;
 
 namespace Notes.ViewModels
@@ -88,6 +89,21 @@ namespace Notes.ViewModels
                 case FilesTypes.Text: await AddText(); break;
                 case FilesTypes.Document: await AddDocument(); break;
                 case FilesTypes.Link: await AddLink(); break;
+                case FilesTypes.Photo: await AddPicture(); break;
+            }
+        }
+
+        private async Task AddPicture()
+        {
+            await CrossMedia.Current.Initialize();
+            if (CrossMedia.Current.IsPickPhotoSupported)
+            {
+                var file = await CrossMedia.Current.PickPhotoAsync();
+                if (file != null)
+                {
+                    var noteFile = new NoteFile() { FileName = file.GetType().ToString(), FileType = FilesTypes.Photo, FilePath = file.Path };
+                    NoteFiles.Add(noteFile);
+                }
             }
         }
 

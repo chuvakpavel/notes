@@ -69,9 +69,23 @@
                     </TextCell.ContextActions>
                 </TextCell>
             </DataTemplate>
+            <DataTemplate x:Key="PhotoDataTemplate">
+                <ImageCell ImageSource="{Binding FilePath}">
+                    <ImageCell.ContextActions>
+                        <MenuItem Clicked="OpenClicked"
+                                  CommandParameter="{Binding .}"
+                                  Text="Open" />
+                        <MenuItem Clicked="DeleteClicked"
+                                  CommandParameter="{Binding .}"
+                                  IsDestructive="True"
+                                  Text="Delete" />
+                    </ImageCell.ContextActions>
+                </ImageCell>
+            </DataTemplate>
             <local:NoteTypeFileTemplateSelector x:Key="noteTypeFileTemplateSelector"
                                                 DocumentDataTemplate="{StaticResource DocumentDataTemplate}"
                                                 LinkDataTemplate="{StaticResource LinkDataTemplate}"
+                                                PhotoDataTemplate="{StaticResource PhotoDataTemplate}"
                                                 TextDataTemplate="{StaticResource TextDataTemplate}" />
             <converters:IntEnumConverter x:Key="IntEnum" />
         </ResourceDictionary>
@@ -82,7 +96,8 @@
     </ContentPage.ToolbarItems>
     <ListView ItemTemplate="{StaticResource noteTypeFileTemplateSelector}"
               ItemsSource="{Binding NoteFiles}"
-              SelectionMode="None">
+              SelectionMode="None"
+              SeparatorVisibility="None">
         <ListView.Header>
             <FlexLayout Direction="Row" Wrap="Wrap">
                 <Label Style="{StaticResource HeaderLabelStyle}" Text="Name:" />

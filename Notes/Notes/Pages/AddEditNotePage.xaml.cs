@@ -37,17 +37,25 @@ namespace Notes.Pages
                 switch (noteFile.FileType)
                 {
                     case FilesTypes.Document:
-                        if (DocumentOpener.CanOpen(noteFile.FilePath))
-                        {
-                            var res = await DocumentOpener.Open(noteFile.FilePath);
-                        }
-                        else
-                        {
-                            await DisplayAlert("Error", "Can't open", "Ok");
-                        }
+                        await OpenDocument(noteFile);
+                        break;
+                    case FilesTypes.Photo:
+                        await OpenDocument(noteFile);
                         break;
                     case FilesTypes.Link: Device.OpenUri(new Uri(noteFile.FileName)); break;
                 }
+            }
+        }
+
+        private async System.Threading.Tasks.Task OpenDocument(NoteFile noteFile)
+        {
+            if (DocumentOpener.CanOpen(noteFile.FilePath))
+            {
+                var res = await DocumentOpener.Open(noteFile.FilePath);
+            }
+            else
+            {
+                await DisplayAlert("Error", "Can't open", "Ok");
             }
         }
 

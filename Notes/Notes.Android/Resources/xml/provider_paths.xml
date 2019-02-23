@@ -5,4 +5,6 @@
   <external-cache-path name="external_cache" path="." />
   <external-files-path name="external_files" path="." />
   <files-path name="documents" path="." />
+  <external-files-path name="my_images" path="Pictures" />
+  <external-files-path name="my_movies" path="Movies" />
 </paths>

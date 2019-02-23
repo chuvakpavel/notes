@@ -11,6 +11,7 @@ namespace Notes.Pages.DataTemplates
         public DataTemplate TextDataTemplate { get; set; }
         public DataTemplate LinkDataTemplate { get; set; }
         public DataTemplate DocumentDataTemplate { get; set; }
+        public DataTemplate PhotoDataTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -20,6 +21,7 @@ namespace Notes.Pages.DataTemplates
                 case FilesTypes.Text:template = TextDataTemplate;break;
                 case FilesTypes.Link: template = LinkDataTemplate; break;
                 case FilesTypes.Document: template = DocumentDataTemplate; break;
+                case FilesTypes.Photo: template = PhotoDataTemplate; break;
             }
             return template;
         }

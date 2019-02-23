@@ -3,8 +3,7 @@
     public enum FilesTypes
     {
         Text=0,
-        Picture,
-        Video,
+        Photo,
         Document,
         Link
     }
