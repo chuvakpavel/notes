@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Notes.Helpers;
 using Notes.Models;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
@@ -57,33 +58,6 @@ namespace Notes.ViewModels
             }
         }
 
-        private async Task AddDocument()
-        {
-            try
-            {
-                FileData fileData = await CrossFilePicker.Current.PickFile();
-                if (fileData == null)
-                    return; // user canceled file picking
-
-                var noteFile = new NoteFile() { FileName = fileData.FileName, FilePath = fileData.FilePath, FileType = FilesTypes.Document };
-                NoteFiles.Add(noteFile);
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine("Exception choosing file: " + ex.ToString());
-            }
-        }
-
-        public async void AddItem()
-        {
-            Enum.TryParse(SelectedType, out FilesTypes result);
-            SelectedType = String.Empty;
-            if (result == FilesTypes.Document)
-            {
-                await AddDocument();
-            }
-        }
-
         private async void SaveNote()
         {
             var note = new Note { Id = Id, Title = Title, Description = Description, IsPrivate = IsPrivate, NoteFiles = NoteFiles?.ToList() };
@@ -102,5 +76,52 @@ namespace Notes.ViewModels
         {
             return !string.IsNullOrEmpty(Title);
         }
+
+
+        public async void AddItem()
+        {
+            Enum.TryParse(SelectedType, out FilesTypes result);
+            SelectedType = String.Empty;
+
+            switch (result)
+            {
+                case FilesTypes.Text: await AddText(); break;
+                case FilesTypes.Document: await AddDocument(); break;
+                case FilesTypes.Link: await AddLink(); break;
+            }
+        }
+
+        private Task AddLink()
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task AddText()
+        {
+            var result = await PopUpsHelper.ShowAddTextPopUp();
+            if (!string.IsNullOrEmpty(result))
+            {
+                var noteFile = new NoteFile() { FileName = result, FileType = FilesTypes.Text };
+                NoteFiles.Add(noteFile);
+            }
+        }
+
+        private async Task AddDocument()
+        {
+            try
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData == null)
+                    return; // user canceled file picking
+
+                var noteFile = new NoteFile() { FileName = fileData.FileName, FilePath = fileData.FilePath, FileType = FilesTypes.Document };
+                NoteFiles.Add(noteFile);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("Exception choosing file: " + ex.ToString());
+            }
+        }
+
     }
 }

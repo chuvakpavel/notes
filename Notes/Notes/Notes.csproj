@@ -30,10 +30,16 @@
     <Compile Update="Pages\AddEditNotePage.xaml.cs">
       <DependentUpon>AddEditNotePage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Pages\PopUpsPages\AddItemPopUps\AddLinkPopUp.xaml.cs">
+      <DependentUpon>AddLinkPopUp.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Pages\AddEditNotePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\PopUpsPages\AddItemPopUps\AddTextPopUp.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\PopUpsPages\CheckPasswordPopUp.xaml">

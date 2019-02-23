@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage x:Class="Notes.Pages.PopUpsPages.AddItemPopUps.AddTextPopUp"
+                 xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 CloseWhenBackgroundIsClicked="False">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation DurationIn="400"
+                                   DurationOut="300"
+                                   EasingIn="SinOut"
+                                   EasingOut="SinIn"
+                                   HasBackgroundAnimation="True"
+                                   PositionIn="Center"
+                                   PositionOut="Center"
+                                   ScaleIn="1.2"
+                                   ScaleOut="0.8" />
+    </pages:PopupPage.Animation>
+    <Frame Padding="10" VerticalOptions="Center">
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Text:" VerticalTextAlignment="Center" />
+            <Entry x:Name="TextEntry"
+                   Completed="TextCompleted"
+                   HorizontalOptions="FillAndExpand"
+                   ReturnType="Done"
+                   Text="" />
+            <Button Clicked="TextCompleted" Text="Ok">
+                <Button.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Reference TextEntry},
+                                                   Path=Text.Length}"
+                                 TargetType="Button"
+                                 Value="0">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>

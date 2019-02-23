@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Notes.Pages.PopUpsPages;
+using Notes.Pages.PopUpsPages.AddItemPopUps;
 using Rg.Plugins.Popup.Services;
 
 namespace Notes.Helpers
@@ -27,9 +28,16 @@ namespace Notes.Helpers
             return await tcs.Task;
         }
 
-        private static void PopUp_PasswordChecked(object sender, bool e)
+        public static async Task<string> ShowAddTextPopUp()
         {
-            throw new System.NotImplementedException();
+            var tcs = new TaskCompletionSource<string>();
+            var popUp = new AddTextPopUp();
+            popUp.AddedText += (object sender, string result) =>
+            {
+                tcs.TrySetResult(result);
+            };
+            await PopupNavigation.Instance.PushAsync(popUp);
+            return await tcs.Task;
         }
     }
 }
