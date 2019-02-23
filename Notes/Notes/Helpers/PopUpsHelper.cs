@@ -39,5 +39,17 @@ namespace Notes.Helpers
             await PopupNavigation.Instance.PushAsync(popUp);
             return await tcs.Task;
         }
+
+        public static async Task<string> ShowAddLinkPopUp()
+        {
+            var tcs = new TaskCompletionSource<string>();
+            var popUp = new AddLinkPopUp();
+            popUp.AddedLink += (object sender, string result) =>
+            {
+                tcs.TrySetResult(result);
+            };
+            await PopupNavigation.Instance.PushAsync(popUp);
+            return await tcs.Task;
+        }
     }
 }

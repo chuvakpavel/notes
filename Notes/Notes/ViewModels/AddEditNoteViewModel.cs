@@ -91,9 +91,14 @@ namespace Notes.ViewModels
             }
         }
 
-        private Task AddLink()
+        private async Task AddLink()
         {
-            throw new NotImplementedException();
+            var result = await PopUpsHelper.ShowAddLinkPopUp();
+            if (!string.IsNullOrEmpty(result))
+            {
+                var noteFile = new NoteFile() { FileName = result, FileType = FilesTypes.Link };
+                NoteFiles.Add(noteFile);
+            }
         }
 
         private async Task AddText()

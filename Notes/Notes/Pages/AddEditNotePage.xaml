@@ -1,49 +1,106 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage x:Class="Notes.Pages.AddEditNotePage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Notes.Converters;assembly=Notes"
-             x:Class="Notes.Pages.AddEditNotePage" Title="{Binding PageTitle}">
+             xmlns:local="clr-namespace:Notes.Pages.DataTemplates"
+             Title="{Binding PageTitle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="HeaderLabelStyle" TargetType="Label">
-                <Setter Property="VerticalTextAlignment" Value="Center"></Setter>
-                <Setter Property="HorizontalTextAlignment" Value="End"></Setter>
-                <Setter Property="FlexLayout.Basis" Value="25%"></Setter>
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="End" />
+                <Setter Property="FlexLayout.Basis" Value="25%" />
             </Style>
-            <Style x:Key="HeaderEntryStyle" TargetType="Entry" >
-                <Setter Property="FlexLayout.Basis" Value="75%"></Setter>
-                <Setter Property="IsTabStop" Value="True"></Setter>
+            <Style x:Key="HeaderEntryStyle" TargetType="Entry">
+                <Setter Property="FlexLayout.Basis" Value="75%" />
+                <Setter Property="IsTabStop" Value="True" />
             </Style>
-            <converters:IntEnumConverter x:Key="IntEnum"/>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Item" Clicked="AddItemClicked"/>
-        <ToolbarItem Text="Save" Command="{Binding SaveNoteCommand}"/>
-    </ContentPage.ToolbarItems>
-    <ListView ItemsSource="{Binding NoteFiles}">
-        <ListView.Header>
-            <FlexLayout Direction="Row" Wrap="Wrap">
-                <Label Text="Name:" Style="{StaticResource HeaderLabelStyle}"/>
-                <Entry Placeholder="Name" Style="{StaticResource HeaderEntryStyle}" Text="{Binding Title}"/>
-                <Label Text="Description:" Style="{StaticResource HeaderLabelStyle}" />
-                <Entry Placeholder="Description" Style="{StaticResource HeaderEntryStyle}" Text="{Binding Description}"/>
-                <Label Text="Private:" Style="{StaticResource HeaderLabelStyle}" />
-                <Switch  IsToggled="{Binding IsPrivate}" Toggled="Switch_OnToggled"/>
-                <Picker IsVisible="False" x:Name="TypePicker" ItemsSource="{Binding TypesNames}" SelectedItem="{Binding SelectedType}" SelectedIndexChanged="TypePicker_SelectedIndexChanged"/>
-            </FlexLayout>
-        </ListView.Header>
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="{Binding FileName}" Detail="{Binding FilePath}">
-                    <TextCell.ContextActions>
-                        <MenuItem Clicked="OpenClicked" CommandParameter="{Binding .}"
+
+            <DataTemplate x:Key="TextDataTemplate">
+                <ViewCell>
+                    <FlexLayout Padding="10,0">
+                        <Label FontAttributes="Bold"
+                               Text="{Binding FileName}"
+                               TextColor="Black"
+                               VerticalTextAlignment="Center" />
+                    </FlexLayout>
+
+                    <ViewCell.ContextActions>
+                        <MenuItem Clicked="DeleteClicked"
+                                  CommandParameter="{Binding .}"
+                                  IsDestructive="True"
+                                  Text="Delete" />
+                    </ViewCell.ContextActions>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="LinkDataTemplate">
+                <ViewCell>
+                    <FlexLayout Padding="10,0">
+                        <Label HorizontalTextAlignment="Center"
+                               Text="{Binding FileName}"
+                               TextColor="Blue"
+                               TextDecorations="Underline"
+                               VerticalTextAlignment="Center" />
+                    </FlexLayout>
+                    <ViewCell.ContextActions>
+                        <MenuItem Clicked="OpenClicked"
+                                  CommandParameter="{Binding .}"
                                   Text="Open" />
-                        <MenuItem Clicked="DeleteClicked" CommandParameter="{Binding .}"
-                                  Text="Delete" IsDestructive="True" />
+                        <MenuItem Clicked="DeleteClicked"
+                                  CommandParameter="{Binding .}"
+                                  IsDestructive="True"
+                                  Text="Delete" />
+                    </ViewCell.ContextActions>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="DocumentDataTemplate">
+                <TextCell Detail="{Binding FilePath}" Text="{Binding FileName}">
+                    <TextCell.ContextActions>
+                        <MenuItem Clicked="OpenClicked"
+                                  CommandParameter="{Binding .}"
+                                  Text="Open" />
+                        <MenuItem Clicked="DeleteClicked"
+                                  CommandParameter="{Binding .}"
+                                  IsDestructive="True"
+                                  Text="Delete" />
                     </TextCell.ContextActions>
                 </TextCell>
             </DataTemplate>
-        </ListView.ItemTemplate>
+            <local:NoteTypeFileTemplateSelector x:Key="noteTypeFileTemplateSelector"
+                                                DocumentDataTemplate="{StaticResource DocumentDataTemplate}"
+                                                LinkDataTemplate="{StaticResource LinkDataTemplate}"
+                                                TextDataTemplate="{StaticResource TextDataTemplate}" />
+            <converters:IntEnumConverter x:Key="IntEnum" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="AddItemClicked" Text="Add Item" />
+        <ToolbarItem Command="{Binding SaveNoteCommand}" Text="Save" />
+    </ContentPage.ToolbarItems>
+    <ListView ItemTemplate="{StaticResource noteTypeFileTemplateSelector}"
+              ItemsSource="{Binding NoteFiles}"
+              SelectionMode="None">
+        <ListView.Header>
+            <FlexLayout Direction="Row" Wrap="Wrap">
+                <Label Style="{StaticResource HeaderLabelStyle}" Text="Name:" />
+                <Entry Placeholder="Name"
+                       Style="{StaticResource HeaderEntryStyle}"
+                       Text="{Binding Title}" />
+                <Label Style="{StaticResource HeaderLabelStyle}" Text="Description:" />
+                <Entry Placeholder="Description"
+                       Style="{StaticResource HeaderEntryStyle}"
+                       Text="{Binding Description}" />
+                <Label Style="{StaticResource HeaderLabelStyle}" Text="Private:" />
+                <Switch IsToggled="{Binding IsPrivate}" Toggled="Switch_OnToggled" />
+                <Picker x:Name="TypePicker"
+                        IsVisible="False"
+                        ItemsSource="{Binding TypesNames}"
+                        SelectedIndexChanged="TypePicker_SelectedIndexChanged"
+                        SelectedItem="{Binding SelectedType}" />
+            </FlexLayout>
+        </ListView.Header>
     </ListView>
 </ContentPage>

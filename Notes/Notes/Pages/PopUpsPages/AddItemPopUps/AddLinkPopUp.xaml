@@ -3,6 +3,7 @@
                  xmlns="http://xamarin.com/schemas/2014/forms"
                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                  xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:behaviors="clr-namespace:Notes.Behaviors"
                  xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
                  CloseWhenBackgroundIsClicked="False">
     <pages:PopupPage.Animation>
@@ -18,19 +19,25 @@
     </pages:PopupPage.Animation>
     <Frame Padding="10" VerticalOptions="Center">
         <StackLayout Orientation="Horizontal">
-            <Label Text="Text:" VerticalTextAlignment="Center" />
+            <Label Text="Link:" VerticalTextAlignment="Center" />
             <Entry x:Name="TextEntry"
                    Completed="TextCompleted"
                    HorizontalOptions="FillAndExpand"
                    ReturnType="Done"
-                   Text="" />
-            <Button Clicked="TextCompleted" Text="Ok">
+                   Text="">
+                <Entry.Behaviors>
+                    <behaviors:LinkValidatorBehavior x:Name="LinkValidator" />
+                </Entry.Behaviors>
+            </Entry>
+            <Button Clicked="TextCompleted"
+                    IsEnabled="False"
+                    Text="Ok">
                 <Button.Triggers>
-                    <DataTrigger Binding="{Binding Source={x:Reference TextEntry},
-                                                   Path=Text.Length}"
+                    <DataTrigger Binding="{Binding Source={x:Reference LinkValidator},
+                                                   Path=IsValid}"
                                  TargetType="Button"
-                                 Value="0">
-                        <Setter Property="IsEnabled" Value="False" />
+                                 Value="True">
+                        <Setter Property="IsEnabled" Value="True" />
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
