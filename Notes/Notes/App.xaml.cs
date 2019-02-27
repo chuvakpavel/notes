@@ -15,9 +15,9 @@ namespace Notes
         public App()
         {
             // Initialize Live Reload.
-#if DEBUG
-            LiveReload.Init();
-#endif
+//#if DEBUG
+//            LiveReload.Init();
+//#endif
 
             InitializeComponent();
 
